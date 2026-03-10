@@ -19,7 +19,9 @@ Future<void> startService() async {
 }
 
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await requestPermissions();
   runApp(const MyApp());
 } 
 

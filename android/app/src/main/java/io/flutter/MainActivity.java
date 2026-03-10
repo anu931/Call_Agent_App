@@ -1,9 +1,11 @@
-package io.flutter.plugins;
+package io.flutter;
 
 import android.content.Intent;
-import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 
 import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
 
 public class MainActivity extends FlutterActivity {
@@ -11,11 +13,11 @@ public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "call_agent_channel";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        super.configureFlutterEngine(flutterEngine);
 
         new MethodChannel(
-                getFlutterEngine().getDartExecutor().getBinaryMessenger(),
+                flutterEngine.getDartExecutor().getBinaryMessenger(),
                 CHANNEL
         ).setMethodCallHandler((call, result) -> {
 
@@ -29,7 +31,6 @@ public class MainActivity extends FlutterActivity {
             } else {
                 result.notImplemented();
             }
-
         });
     }
 }
