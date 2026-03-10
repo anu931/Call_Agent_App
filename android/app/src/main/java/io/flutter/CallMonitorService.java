@@ -7,6 +7,21 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
+private void createNotificationChannel(){
+
+    if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+
+        NotificationChannel serviceChannel = new NotificationChannel(
+            "call_channel",
+            "Call Monitor Service",
+            NotificationManager.IMPORTANCE_LOW
+        );
+
+        NotificationManager manager = getSystemService(NotificationManager.class);
+
+        manager.createNotificationChannel(serviceChannel);
+    }
+}
 public class CallMonitorService extends Service{
 
     @Override

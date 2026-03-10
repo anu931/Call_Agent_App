@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
 
+import java.io.File;
+import android.os.Environment;
+
 public class CallReceiver extends BroadcastReceiver{
 
     private static String lastState = "";
@@ -12,6 +15,8 @@ public class CallReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent){
+        String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+             
         String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
         if(state == null)return;
@@ -40,5 +45,16 @@ public class CallReceiver extends BroadcastReceiver{
 
         lastState = "IDLE";
       }
+
+   }
+   private void createRecordingFolder(){
+
+    File dir=new File(
+        Environment.getExternalStorageDirectory() + "/CallAgent/recordings"
+        
+    );
+    if(!dir.exists()){
+     dir.mkdirs();
+    }
    }
 }

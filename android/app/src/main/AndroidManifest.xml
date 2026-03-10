@@ -32,18 +32,9 @@
         </activity>
 
         <service
-            android:name=".CallRecorderService"
-            android:exported="false" />
-            <android:name=".CallMonitorService"
+            android:name=".CallMonitorService"
+            android:exported="false" 
             android:foregroundServiceType="microphone"/>
-
-        <receiver
-            android:name=".PhoneStateReceiver"
-            android:exported="true">
-            <intent-filter android:priority="999">
-                <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
 
         <receiver android:name=".BootReceiver">
            <intent-filter>
@@ -51,7 +42,8 @@
            </intent-filter>
         </receiver>
 
-        <receiver android:name=".CallReceiver">
+        <receiver android:name=".CallReceiver"      
+          android:exported = "true">
            <intent-filter>
                <action android:name="android.intent.action.PHONE_STATE"/>
            </intent-filter>
