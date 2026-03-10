@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/call_log_screen.dart';
 
+
 void main() => runApp(MaterialApp(
   debugShowCheckedModeBanner: false,
   theme: ThemeData.dark(),
@@ -30,4 +31,9 @@ class _AppShellState extends State<AppShell> {
       ],
     ),
   );
+}
+const platform = MethodChannel("call_agent_channel");
+
+Future<void> startService() async {
+  await platform.invokeMethod("startService");
 }
