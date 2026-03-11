@@ -32,18 +32,18 @@
         </activity>
 
         <service
-            android:name=".CallMonitorService"
+            android:name="io.flutter.CallMonitorService"
             android:exported="false" 
             android:foregroundServiceType="microphone"/>
 
-        <receiver android:name=".BootReceiver"
+        <receiver android:name="io.flutter.BootReceiver"
             android:exported="true"> 
            <intent-filter>
                <action android:name="android.intent.action.BOOT_COMPLETED"/>
            </intent-filter>
         </receiver>
 
-        <receiver android:name=".CallReceiver"      
+        <receiver android:name="io.flutter.CallReceiver"      
           android:exported = "true">
            <intent-filter>
                <action android:name="android.intent.action.PHONE_STATE"/>

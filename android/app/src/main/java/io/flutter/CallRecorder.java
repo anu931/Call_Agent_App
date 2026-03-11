@@ -1,7 +1,7 @@
-package com.example.call_agent;
+package io.flutter;
 
+import android.content.Context;
 import android.media.MediaRecorder;
-import android.os.Environment;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -12,29 +12,25 @@ public class CallRecorder {
     private MediaRecorder recorder;
     private String filePath;
 
-    public void startRecording() {
+    public void startRecording(Context context) {
 
         try {
 
-            String timestamp =
-                    new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-            File dir = new File(
-                    Environment.getExternalStorageDirectory(),
-                    "CallAgent/recordings"
-            );
+            File dir = new File(context.getExternalFilesDir(null), "recordings");
 
             if (!dir.exists()) {
                 dir.mkdirs();
             }
 
-            filePath = dir.getAbsolutePath() + "/call_" + timestamp + ".mp4";
+            filePath = dir.getAbsolutePath() + "/call_" + timeStamp + ".3gp";
 
             recorder = new MediaRecorder();
 
-            recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             recorder.setOutputFile(filePath);
 
             recorder.prepare();
@@ -45,32 +41,20 @@ public class CallRecorder {
         }
     }
 
-    public void stopRecording() {
+    public String stopRecording() {
 
         try {
 
-            if (recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
 
-                recorder.stop();
-                recorder.release();
-                recorder = null;
-
-                saveCallLog(filePath);
-            }
+            return filePath;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    private void saveCallLog(String path) {
-
-        // Later you will insert this into SQLite
-        // Example fields:
-        // phone_number
-        // file_path
-        // timestamp
-        // duration
-
+        return null;
     }
 }
