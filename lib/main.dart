@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/call_log_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter/services.dart';
-
-const platform = MethodChannel("call_agent_channel");
 
 Future<void> requestPermissions() async {
   await [
@@ -13,11 +10,6 @@ Future<void> requestPermissions() async {
     Permission.storage
   ].request();
 }
-
-Future<void> startService() async {
-  await platform.invokeMethod("startService");
-}
-
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,14 +42,6 @@ class AppShell extends StatefulWidget {
     HomeScreen(),
     CallLogScreen(),
   ];
-
-  @override
-  void initState(){
-    super.initState();
-
-    requestPermissions();
-    startService();
-  }
  
   @override
   Widget build(BuildContext context){
