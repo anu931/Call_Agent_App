@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.crm_app"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -22,7 +22,7 @@ android {
         applicationId = "com.example.crm_app"
         // minSdk 29 required for foregroundServiceType="microphone" (Android 10+)
         minSdk = 29
-        targetSdk = 35
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

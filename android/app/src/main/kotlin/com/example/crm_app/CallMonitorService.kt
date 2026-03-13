@@ -20,6 +20,7 @@ class CallMonitorService : Service() {
     companion object {
         private const val TAG = "CallMonitorService"
         const val ACTION_START_RECORDING = "ACTION_START_RECORDING"
+        const val ACTION_CANCEL_RECORDING = "ACTION_CANCEL_RECORDING"  
         const val ACTION_STOP_RECORDING  = "ACTION_STOP_RECORDING"
         const val ACTION_INIT            = "ACTION_INIT"
         const val EXTRA_PHONE_NUMBER     = "phone_number"
@@ -59,6 +60,10 @@ class CallMonitorService : Service() {
                 val isIncoming = intent.getBooleanExtra(EXTRA_IS_INCOMING, true)
                 stopAndSave(number, duration, isIncoming)
             }
+            ACTION_CANCEL_RECORDING -> {       // ← ADD THIS BLOCK
+            cancelRecording()
+         }
+
         }
         return START_STICKY
     }
@@ -107,6 +112,27 @@ class CallMonitorService : Service() {
         updateNotification("CRM: Monitoring calls…")
     }
 
+    private fun cancelRecording() {
+    if (isRecording) {
+        try {
+            mediaRecorder?.stop()
+            mediaRecorder?.release()
+            mediaRecorder = null
+            isRecording = false
+            // Delete the incomplete recording file
+            currentRecordingPath?.let { File(it).delete() }
+            currentRecordingPath = null
+            Log.d(TAG, "Recording cancelled and file deleted")
+        } catch (e: Exception) {
+            Log.e(TAG, "Cancel error: ${e.message}")
+            mediaRecorder?.release()
+            mediaRecorder = null
+            isRecording = false
+        }
+    }
+updateNotification("CRM: Monitoring calls…")
+}
+
     private fun saveCallLog(phoneNumber: String, duration: Int, isIncoming: Boolean, recordingPath: String) {
         try {
             val db = dbHelper.writableDatabase
@@ -153,7 +179,6 @@ class CallMonitorService : Service() {
     }
 }
 
-// ── SQLite helper embedded in same file ──────────────────────────────────────
 class CallLogDbHelper(context: Context) :
     SQLiteOpenHelper(context, "crm_calls.db", null, 1) {
 
